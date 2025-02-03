@@ -163,3 +163,4 @@ C:\Users\Johan\source\repos\webshop\webshop\bin\Debug\net8.0\SharpCompress.dll
 C:\Users\Johan\source\repos\webshop\webshop\bin\Debug\net8.0\Snappier.dll
 C:\Users\Johan\source\repos\webshop\webshop\bin\Debug\net8.0\ZstdSharp.dll
 C:\Users\Johan\source\repos\webshop\webshop\bin\Debug\net8.0\Bogus.dll
+C:\Users\Johan\source\repos\webshop\webshop\obj\Debug\net8.0\webshop.sourcelink.json

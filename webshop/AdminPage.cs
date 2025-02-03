@@ -14,10 +14,11 @@ namespace webshop
     {
         Rekomended = 1,
         Change = 2,
-        Customer_Info = 3,
-        Statistiks = 4,
-        Stock = 5,
-        Exit = 6,
+        Category = 3,
+        Customer_Info = 4,
+        Statistiks = 5,
+        Stock = 6,
+        Exit = 7,
     }
     internal class AdminPage
     {
@@ -30,6 +31,7 @@ namespace webshop
                 {
                     $"{(int)Menu.Rekomended}: Change rekomended products",
                     $"{(int)Menu.Change}: Add, Change or Remove products",
+                    $"{(int)Menu.Category}: Add Category",
                     $"{(int)Menu.Customer_Info}: View customer info",
                     $"{(int)Menu.Statistiks}: View statistiks",
                     $"{(int)Menu.Stock}: Order more stock",
@@ -64,6 +66,9 @@ namespace webshop
                     case Menu.Change:
                         await AddRemove();
                         break;
+                    case Menu.Category:
+                            await AddCategory();
+                        break;
                     case Menu.Customer_Info:
                         await ChangeCustomer();
                         break;
@@ -89,6 +94,53 @@ namespace webshop
                 }
 
             }while (true);
+        }
+
+        public async Task AddCategory()
+        {
+            Console.Clear();
+            try
+            {
+                using var db = new MyDbContext();
+
+                var categories = await db.Category.ToListAsync();
+
+                var categoryList = new List<string>();
+                foreach (var category in categories)
+                {
+                    string text = $"Id {category.Id}: {category.Name}";
+                    categoryList.Add(text);
+                }
+
+                var window = new WindowManager("Categories", 0, 0, categoryList);
+                window.Draw();
+                var newCategory = new Models.Category();    
+
+                Console.WriteLine("Enter the name of the new category.");
+
+                while (true)
+                {
+                    newCategory.Name = Console.ReadLine();
+
+                    if(newCategory.Name != "")
+                    {
+                        await db.Category.AddAsync(newCategory);
+                        await db.SaveChangesAsync();
+
+                        Console.WriteLine($"Category {newCategory.Name} has been added.");
+                        Thread.Sleep(1500);
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter a valid name");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong!");
+            }
         }
 
         public async Task AddStock(int id)
