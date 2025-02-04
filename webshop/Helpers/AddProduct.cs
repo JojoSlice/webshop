@@ -71,11 +71,24 @@ namespace webshop.Helpers
                 { "SupplierId", value => newGarment.SupplierId = int.Parse(value) }
             };
 
+            var categories = db.Category
+                .GroupBy (c => c.Name)
+                .SelectMany(g => g.Select(c => new { Name = g.Key, Id = c.Id }))
+                .ToList();
+
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"Id {category.Id}: {category.Name}");
+            }
+
             foreach (var field in fields)
             {
                 Console.WriteLine($"Enter: {field.Key}");
                 string input = Console.ReadLine();
-                field.Value(input);
+                if (input != "")
+                {
+                    field.Value(input);
+                }
             }
 
             try
