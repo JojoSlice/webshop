@@ -85,7 +85,7 @@ namespace webshop.Helpers
             {
                 Console.WriteLine($"Enter: {field.Key}");
                 string input = Console.ReadLine();
-                if (input != "")
+                if (input != "" && change.Key != ConsoleKey.D1)
                 {
                     field.Value(input);
                 }
