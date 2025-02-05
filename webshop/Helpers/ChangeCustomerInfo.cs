@@ -37,10 +37,7 @@ namespace webshop.Helpers
                     {
                         Console.Write($"Enter new {field.Key}: ");
                         string input = Console.ReadLine();
-                        if (input != "")
-                        {
                             field.Value(input);
-                        }
                     }
                     await db.SaveChangesAsync();
                 }

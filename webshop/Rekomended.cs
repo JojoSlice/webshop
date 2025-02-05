@@ -27,12 +27,13 @@ namespace webshop
             }
 
             List<string> text = garments
-                .Distinct()
-                .Select(p => $"{p.Id}: {p.Name.PadRight(25)} Price: {Math.Round(p.Price, 2)}")
+                .Select(p => $"{p.Id}: {p.Name.PadRight(35)}   Size: {p.Size}     Price: {Math.Round(p.Price, 2)}")
                 .ToList();
-            var window = new WindowManager("", 0, 0, text);
-            window.Draw();
-
+            
+            foreach (var t in text)
+            {
+                Console.WriteLine(t);
+            }
             Console.WriteLine("Choose five desired products to show on the front page");
 
             List<Models.Garment> garmentsToShow = new List<Models.Garment>();

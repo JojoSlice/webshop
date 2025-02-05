@@ -13,15 +13,11 @@ namespace webshop.Helpers
         {
             using var db = new MyDbContext();
 
-            Models.Garment newGarment = null;
+            var newGarment = new Models.Garment();
 
             Console.WriteLine("Do you wish to add'1' och change'2' a product?");
             var change = Console.ReadKey(true);
-            if (change.Key == ConsoleKey.D1)
-            {
-                newGarment = new Models.Garment();
-            }
-            else
+            if (change.Key == ConsoleKey.D2)
             {
                 var dapper = new Dapper();
                 try
@@ -72,9 +68,9 @@ namespace webshop.Helpers
             };
 
             var categories = db.Category
-                .GroupBy (c => c.Name)
-                .SelectMany(g => g.Select(c => new { Name = g.Key, Id = c.Id }))
-                .ToList();
+                            .ToList();
+            var suppliers = db.Supplier
+                            .ToList();  
 
             foreach (var category in categories)
             {
@@ -83,12 +79,16 @@ namespace webshop.Helpers
 
             foreach (var field in fields)
             {
+                if (field.Key.ToString() == "SupplierId")
+                {
+                    foreach( var s in suppliers)
+                    {
+                        Console.WriteLine($"Id {s.Id}: {s.Name}");
+                    }
+                }
                 Console.WriteLine($"Enter: {field.Key}");
                 string input = Console.ReadLine();
-                if (input != "" && change.Key != ConsoleKey.D1)
-                {
                     field.Value(input);
-                }
             }
 
             try
@@ -104,6 +104,8 @@ namespace webshop.Helpers
                 }
 
                 await db.SaveChangesAsync();
+
+                Console.ReadLine();
 
                 var admin = db.Admin
                     .Where(a => a.Id == Account.LoggedinID)
